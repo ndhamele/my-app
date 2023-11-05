@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 import './styles.css';
-import { ErrorCallback } from 'typescript';
+// import { ErrorCallback } from 'typescript';
 
 interface RegistrationProps {
   onRegister: () => void;
 }
 
-function Registration({ onRegister }: RegistrationProps) {
+function Registration({ onRegister = () => {}}: RegistrationProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -29,12 +29,12 @@ function Registration({ onRegister }: RegistrationProps) {
         },
         body: JSON.stringify({ username, password })
       });
-      const data = await response.json();
+      // const data = await response.json();
       if (response.ok) {
         onRegister();
         setRedirectToLogin(true);
       } else {
-        setError(data.message);
+        setError('Registration failed. Please try again.');
       }
     } catch (error) {
         let message = 'Unknown Error'
@@ -44,9 +44,20 @@ function Registration({ onRegister }: RegistrationProps) {
       }
   };
 
+  const navigate = useNavigate();
+  useEffect(() => {
   if (redirectToLogin) {
-    return <Navigate to="/login" />;
+    console.log("Redirecting to login");
+    try{
+      return navigate('/login');
+    }
+    catch (error) {
+      let message = 'Unknown Error'
+      if (error instanceof Error) message = error.message
+      console.log("Error: " + error);
+      }
   }
+}, [redirectToLogin, navigate]);
 
   return (
     <div className="Registration">
@@ -67,11 +78,12 @@ function Registration({ onRegister }: RegistrationProps) {
         </label>
         <br />
         <button type="submit" className="Registration-button"> Register</button>
-        {/* {error && <p className="Registration-error">{error}</p>} */}
+        {error && <p className="Registration-error">{error}</p>}
         <p>Already have a account?</p>
         <button className="Registration-button" onClick={() => setRedirectToLogin(true)} >
             Login here
         </button>
+        {/* <a href="/login" className="Registration-button">Login here</a> */}
       </form>
     </div>
   );

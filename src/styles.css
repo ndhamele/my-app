@@ -35,9 +35,18 @@ input[type=submit]:hover {
     text-align: center;
     background-color: #f2f2f2;
     padding: 20px;
+    margin-top: 100px;
+  }
+
+.Login {
+    text-align: center;
+    background-color: #f2f2f2;
+    padding: 30px;
+    margin-top: 100px;
   }
   
-  .Registration-input {
+.Registration-input {
+    width: 25%;
     padding: 10px;
     margin: 10px;
     border: none;
@@ -60,3 +69,74 @@ input[type=submit]:hover {
     color: red;
     margin: 10px;
   }
+
+  .App {
+    background-image: url('https://img.freepik.com/free-vector/background-realistic-abstract-technology-particle_23-2148431735.jpg?w=1060&t=st=1697597741~exp=1697598341~hmac=e83148d4079181f86caefc5f6039c9ece4331cfc2906d7cd05d72013c0e14a3c');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .CanvasLMS {
+    padding: 100px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .CanvasLMS-content {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    flex: 33;
+    flex: 1 0 25%;
+  }
+  
+  .card__container {
+    margin-top: -200px;
+    display: flex;
+    padding: 50px;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+
+.CanvasLMS h1 {
+    color: #333;
+}
+
+.CanvasLMS h2 {
+    color: #555;
+}
+
+.Assignments {
+    list-style-type: none;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.Assignments li {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+
+
+  /* .Assignments{
+    text-align: center;
+    background-image: "https://img.freepik.com/free-vector/background-realistic-abstract-technology-particle_23-2148431735.jpg?w=1060&t=st=1697597741~exp=1697598341~hmac=e83148d4079181f86caefc5f6039c9ece4331cfc2906d7cd05d72013c0e14a3c";
+    padding: 30px;
+  } */

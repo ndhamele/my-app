@@ -23,12 +23,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Login from './Login';
+// import Login from './Login';
 
-function handleLogin(username: string, password: string) {
-  // handle login logic here
-  console.log(`Logging in with ${username} and ${password}`);
-}
+// function handleLogin(username: string, password: string) {
+//   // handle login logic here
+//   console.log(`Logging in with ${username} and ${password}`);
+// }
 
 ReactDOM.render(
   <React.StrictMode>
