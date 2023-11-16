@@ -10,7 +10,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-// import MenuIcon from '@mui/icons-material/Menu';
+// import Menu;;  3qIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import './styles.css';
 
@@ -71,9 +71,9 @@ const newAssignments: Assignment[] = [newAssignment];
       <Router>
         <Routes>
         <Route path="/" element={<Registration onRegister={() => {}}/>} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path ="/login/dashboard" element={<CanvasLMS {...canvasLMSProps}/>} />
-        <Route path="/login/dashboard/assignments" element={<CanvasLMS {...canvasLMSProps}/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path ="/dashboard" element={<CanvasLMS {...canvasLMSProps}/>} />
+        <Route path="/assignments" element={<CanvasLMS {...canvasLMSProps}/>} />
         </Routes>
       </Router>
       {/* <Registration onRegister={() => {}} /> */}

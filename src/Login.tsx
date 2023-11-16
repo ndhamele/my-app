@@ -1,31 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface LoginProps {
-  onLogin: (username: string, password: string) => void;
-}
-
-function Login({ onLogin }: LoginProps) {
-  const [username, setUsername] = useState('');
+function Login() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onLogin(username, password);
-    // go to dashboard
-    navigate('/login/dashboard');
+
+    try {
+      const response = await fetch('http://172.20.6.239:3000/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        console.log(data.token);
+        navigate('/dashboard');
+      } else {
+        setError('Login failed: ' + response.statusText);
+      }
+    } catch (error: any) {
+      console.log(error);
+      setError('Network error: ' + error.message);
+    }
   };
 
   return (
     <div className="Login">
       <form onSubmit={handleSubmit}>
         <label>
-          Username:
+          Email:
           <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="Registration-input"
           />
         </label>
@@ -40,9 +56,8 @@ function Login({ onLogin }: LoginProps) {
           />
         </label>
         <br />
-        <button className="Registration-button" type="submit">
-          Login
-        </button>
+        <button type="submit" className="Registration-button">Login</button>
+        {error && <div>{error}</div>}
       </form>
     </div>
   );

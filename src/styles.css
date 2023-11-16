@@ -5,15 +5,14 @@ form {
 }
 
 /* Style the form fields */
-input[type=text], input[type=password], select {
-    width: 100%;
-    padding: 12px 20px;
+/* input[type=text], input[type=password], input[type=email], select {
+    width: 50%;
     margin: 8px 0;
-    display: inline-block;
+    display: block ;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-}
+} */
 
 /* Style the submit button */
 input[type=submit] {
