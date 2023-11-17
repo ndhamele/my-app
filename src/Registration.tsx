@@ -85,7 +85,6 @@ function Registration({ onRegister = () => {}}: RegistrationProps) {
           Role:
           <select value={role} onChange={(e) => setRole(e.target.value)} className="Registration-input">
             <option value="Student">Student</option>
-            <option value="TA">TA</option>
             <option value="Professor">Professor</option>
           </select>
         </label>

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext'; 
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,8 +23,7 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token);
-        console.log(data.token);
+        authContext?.login(data.token);
         navigate('/dashboard');
       } else {
         setError('Login failed: ' + response.statusText);

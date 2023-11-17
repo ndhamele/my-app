@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { RouteProps  } from 'react-router-dom';
 import MediaCard from './MediaCard';
+import DallEImage from './DALL_E.png';
+import DallEImage1 from './DALL_E_2.png';
 
 
 
@@ -44,10 +46,11 @@ const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
             <div className='CanvasLMS-content'>
             <h2 style={{ textAlign: 'left', padding:'50px' }}>Welcome to {courseName} on Canvas LMS!</h2>
             {/* use mediacard to display courses */}
-            <div style={{ flex: '1 0 25%', padding: 'none', left: 'none', flexWrap: 'wrap', marginLeft: '-350px' }} className="card__container">
-                <MediaCard title="Sample Course" image={["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpRn0N2ODFLEUmIkQVjO4tBk5GC6Ifxqyw4w&usqp=CAU"]} description="Sample Description"  />
-                <MediaCard title="Sample Course" image={["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpRn0N2ODFLEUmIkQVjO4tBk5GC6Ifxqyw4w&usqp=CAU"]} description="Sample Description" />
+            <div style={{ flex: '1 0 25%', padding: 0, flexWrap: 'wrap' }} className="card__container">
+                <MediaCard title="Sample Course" image={[DallEImage]} description="Sample Description" />
+                <MediaCard title="Sample Course" image={[DallEImage1]} description="Sample Description" />
             </div>
+
             {/* <h2>Assignments:</h2> */}
             {/* <ul className="Assignments">
                 {assignments.map((assignment, index) => (

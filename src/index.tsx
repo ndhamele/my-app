@@ -23,6 +23,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { AuthProvider } from './AuthContext';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 // import Login from './Login';
 
 // function handleLogin(username: string, password: string) {
@@ -32,8 +35,11 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-      {/* <Login onLogin={handleLogin} /> */}
+    <Router>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
