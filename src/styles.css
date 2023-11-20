@@ -139,3 +139,65 @@ input[type=submit]:hover {
     background-image: "https://img.freepik.com/free-vector/background-realistic-abstract-technology-particle_23-2148431735.jpg?w=1060&t=st=1697597741~exp=1697598341~hmac=e83148d4079181f86caefc5f6039c9ece4331cfc2906d7cd05d72013c0e14a3c";
     padding: 30px;
   } */
+
+
+
+  /* Below is css for course details page */
+  .wrapper {
+    display: flex;
+}
+
+/* Left Sidebar Navigation */
+.left-sidebar {
+    width: 200px; /* Adjust the width as needed */
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+
+.left-sidebar ul {
+    list-style-type: none;
+}
+
+.left-sidebar a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Center Content Area */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.content .row {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+/* Right Sidebar Navigation */
+.right-sidebar {
+    width: 200px; /* Adjust the width as needed */
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+
+.right-sidebar ul {
+    list-style-type: none;
+}
+
+.right-sidebar a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Below is css for Assignment1*/
+.assignment-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
