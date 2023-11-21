@@ -21,7 +21,7 @@ const CourseModule = () => {
   };
 
   return (
-    <div className="CourseModule" >
+    <div className="course-sidebar" >
     <SidebarItem label="Assignment" onClick={() => handleNavigation('/course/Assignments')} />
     <SidebarItem label="Discussion" onClick={() => handleNavigation('/course/Discussion')} />
     <SidebarItem label="Quiz" onClick={() => handleNavigation('/course/Quiz')} />

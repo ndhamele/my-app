@@ -11,9 +11,15 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import './styles.css';
 import { AuthContext } from './AuthContext';
+import Sidebar from './dashboard_Sidebar';
+import CourseModule from './course_Module';
 
 function App() {
   const authContext = useContext(AuthContext);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -59,12 +65,19 @@ function App() {
             </Toolbar>
           </AppBar>
         </Box>
+        <div className={`content-container ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        {authContext?.isLoggedIn && (
+          <Sidebar />
+          )}
         <Routes>
           <Route path="/" element={<Registration onRegister={() => {}}/>} />
           <Route path="/login" element={<Login />} /> {/* Pass handleLogin to Login component */}
           <Route path="/dashboard" element={<CanvasLMS {...canvasLMSProps}/>} />
           <Route path="/assignments" element={<CanvasLMS {...canvasLMSProps}/>} />
+          <Route path="/course" element={<CourseModule />} />
+          <Route path="/course/Assignments" element={<CanvasLMS {...canvasLMSProps}/>} />
         </Routes>
+      </div>
       </div>
   );
 }

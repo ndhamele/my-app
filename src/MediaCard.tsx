@@ -35,7 +35,8 @@ const MediaCard: React.FC<MediaCardProps> = ({ title, image, description, course
 
   const handleSelect = () => {
     console.log('handleSelect');
-    navigate('login/dashboard/assignments');
+    navigate('/course');
+    // navigate('login/dashboard/assignments');
   };
   
   return (

@@ -42,9 +42,9 @@ const styles = {
   },
   sidebar: {
     backgroundColor: '#2c3e50',
-    width: '250px',
+    width: '12%',
     height: '100vh',
-    padding: '10% 0',
+    padding: '8% 0',
     // Add any other sidebar styling here
   },
   dashboard: {
