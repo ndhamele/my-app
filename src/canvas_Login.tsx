@@ -1,71 +1,129 @@
-import React, { useState } from 'react';
-import { RouteProps  } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import MediaCard from './MediaCard';
 import DallEImage from './DALL_E.png';
-import DallEImage1 from './DALL_E_2.png';
+import './styles.css';
+import ErrorBoundary from './ErrorBoundary';
 
-
-
+// Define the types for your course and assignments
 export interface Assignment {
-    id: number;
-    name: string;
-    dueDate: Date;
+  id: number;
+  name: string;
+  dueDate: Date;
 }
 
 interface DashboardProps {
-    assignments: Assignment[];
-    courseName: string;
+  assignments: Assignment[];
+  courseName: string;
 }
 
 export interface CanvasLMSProps {
-    dashboardProps: DashboardProps;
-    location: string; // Define location and other route props as needed
-    match: {
-      path: string;
-    };
-  }
+  dashboardProps: DashboardProps;
+  location: string;
+  match: {
+    path: string;
+  };
+}
 
+type Course = {
+  id: number;
+  name: string;
+  description: string;
+  courseCode: string;
+  instructor: string;
+};
+
+// // Error Boundary Component
+// class ErrorBoundary extends React.Component {
+//   state = { hasError: false };
+
+//   static getDerivedStateFromError(error: Error) {
+//     return { hasError: true };
+//   }
+
+//   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+//     console.error('Uncaught error:', error, errorInfo);
+//   }
+
+//   render() {
+//     if (this.state.hasError) {
+//       return <h1>Something went wrong. Please try again later.</h1>;
+//     }
+//     return this.props.children;
+//   }
+// }
+
+// CanvasLMS Component
 const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
-    const { assignments, courseName } = dashboardProps;
-    const [notifications, setNotifications] = useState<boolean[]>(new Array(assignments.length).fill(false));
+  const [courses, setCourses] = useState<Course[]>([]);
+  const { assignments } = dashboardProps;
+  const [notifications, setNotifications] = useState<boolean[]>(new Array(assignments.length).fill(false));
 
-    const handleNotificationToggle = (index: number) => {
-        const newNotifications = [...notifications];
-        newNotifications[index] = !newNotifications[index];
-        setNotifications(newNotifications);
-    };
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // Retrieve your token from localStorage
+    const headers = new Headers({
+      'Authorization': `Bearer ${token}`,
+    });
 
-// on click of course show assignments
-    const handleCourse = () => {
-        console.log('handleCourse');
-    };
-    
+    fetch('http://172.20.6.239:3000/api/courses', { headers })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!Array.isArray(data)) {
+            // Maybe the data is in a property of the returned object?
+            // e.g., if the API returns { courses: [...courses] }
+            if (data.courses && Array.isArray(data.courses)) {
+              setCourses(data.courses);
+            } else {
+              // Handle the error appropriately
+              console.error('Data received is not an array:', data);
+              // Set to an empty array or handle however you'd like
+              setCourses([]);
+            }
+          } else {
+            setCourses(data);
+          }
+      })
+      .catch(error => {
+        console.error('Error fetching courses:', error);
+      });
+  }, []);
 
-    return (
-        <div className='CanvasLMS'>
-            <div className='CanvasLMS-content'>
-            <h2 style={{ textAlign: 'left', padding:'50px' }}>Welcome to {courseName} on Canvas LMS!</h2>
-            {/* use mediacard to display courses */}
-            <div style={{ flex: '1 0 25%', padding: 0, flexWrap: 'wrap' }} className="card__container">
-                <MediaCard title="Sample Course" image={[DallEImage]} description="Sample Description" />
-                <MediaCard title="Sample Course" image={[DallEImage1]} description="Sample Description" />
-            </div>
+  const handleNotificationToggle = (index: number) => {
+    const newNotifications = [...notifications];
+    newNotifications[index] = !newNotifications[index];
+    setNotifications(newNotifications);
+  };
 
-            {/* <h2>Assignments:</h2> */}
-            {/* <ul className="Assignments">
-                {assignments.map((assignment, index) => (
-                    <li key={assignment.id}>
-                        {assignment.name} - Due: {assignment.dueDate.toLocaleDateString()}
-                        <label>
-                            <input type="checkbox" checked={notifications[index]} onChange={() => handleNotificationToggle(index)} />
-                            Notify me when this assignment is due
-                        </label>
-                    </li>
-                ))}
-            </ul> */}
-            </div>
-        </div>
-    );
+  // on click of course show assignments
+  const handleCourse = () => {
+    console.log('handleCourse');
+  };
+
+  return (
+    <ErrorBoundary>
+    <div className='CanvasLMS'>
+      <div className='CanvasLMS-content'>
+        <h2 style={{ textAlign: 'left', padding: '50px' }}>Dashboard!</h2>
+        {/* use MediaCard to display courses */}
+        {courses.map(course => (
+          <MediaCard
+            key={course.id}
+            title={course.name}
+            image={[DallEImage]} // You might want to replace this with an actual image from the course data
+            description={course.description}
+            courseCode={course.courseCode}
+            instructor={course.instructor}
+          />
+        ))}
+      </div>
+    </div>
+    </ErrorBoundary>
+  );
 };
 
 export default CanvasLMS;
+

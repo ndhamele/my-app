@@ -16,12 +16,12 @@ function App() {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (authContext && !authContext.isLoggedIn) {
-      // If not logged in, redirect to login page
-      navigate('/login');
-    }
-  }, [authContext, authContext?.isLoggedIn, navigate]);
+  // useEffect(() => {
+  //   if (authContext && !authContext.isLoggedIn) {
+  //     // If not logged in, redirect to login page
+  //     navigate('/login');
+  //   }
+  // }, [authContext, authContext?.isLoggedIn, navigate]);
   const newAssignment: Assignment = {
     id: 1,
     name: "New Assignment",

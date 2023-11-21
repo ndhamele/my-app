@@ -16,10 +16,12 @@ interface MediaCardProps {
   title: string;
   image: string[];
   description: string;
+  courseCode: string;
+  instructor: string;
 }
 
 
-const MediaCard: React.FC<MediaCardProps> = ({ title, image, description }) => {
+const MediaCard: React.FC<MediaCardProps> = ({ title, image, description, courseCode, instructor }) => {
   const settings = {
     dots: true,
     infinite: true,
