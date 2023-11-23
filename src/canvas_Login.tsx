@@ -4,6 +4,7 @@ import DallEImage from './DALL_E.png';
 import './styles.css';
 import ErrorBoundary from './ErrorBoundary';
 import { AuthContext } from './AuthContext';
+import CourseModule from './course_Module';
 
 // Define the types for your course and assignments
 export interface Assignment {
@@ -119,7 +120,6 @@ const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
     <ErrorBoundary>
     <div className='CanvasLMS'>
       <div className='CanvasLMS-content'>
-        <h2 style={{ textAlign: 'left', padding: '50px' }}>Dashboard!</h2>
         {/* use MediaCard to display courses */}
         {courses.map(course => (
           <MediaCard

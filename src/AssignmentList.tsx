@@ -7,6 +7,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import { Link } from "react-router-dom";
 import "./styles.css";
 import modifyNotification from "./Notification";
+import CourseModule from "./course_Module";
 
 
 export interface Assignment {
@@ -77,17 +78,19 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
 
 
   return (
-    <div className="assignment-list">
+    <div className="container-fluid d-flex justify-content-start" style={{marginTop:70}}>
+        <div className="d-inline col-3"><CourseModule /></div>
+    <div className="d-inline col-9 container" >
       {isInstructor && <AddAssignmentForm setAssignments={setAssignments} />}
-      <h2 style={{ marginTop: "-20%" }}>Assignments</h2>
-      <table className="table">
+      {/* <h2 style={{ marginTop: "-20%" }}>Assignments</h2> */}
+      <table className="table table-hover">
         <thead>
           <tr>
-            <th className="table name-column">Name</th>
-            <th className="table description-column">Description</th>
-            <th className="table due-date-column">Due Date</th>
-            <th className="table points-column">Points</th>
-            <th className="table button-column"></th>{" "}
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Points</th>
+            <th scope="col"></th>{" "}
             {/* This is for the button */}
           </tr>
         </thead>
@@ -119,6 +122,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };

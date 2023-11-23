@@ -80,7 +80,7 @@ function App() {
           <Route path="/" element={<Registration onRegister={() => {}}/>} />
           <Route path="/login" element={<Login />} /> {/* Pass handleLogin to Login component */}
           <Route path="/dashboard" element={<CanvasLMS {...canvasLMSProps}/>} />
-          {/* <Route path="/course" element={<CourseModule />} /> */}
+          <Route path="/course" element={<CourseModule />} />
           <Route path="/assignments/:courseCode" element={<AssignmentList isInstructor={isInstructor} />} />
           <Route path="/assignments/:course/:id" element={<AssignmentDetail />} />
           <Route path="/notifications/:assignmentId" element={<ModifyNotification/>} />
