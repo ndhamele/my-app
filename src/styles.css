@@ -337,19 +337,7 @@ margin: 10px;
 }
 
 .notificationCard {
-  margin-top: 10%;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  /* margin-left: -2%; */
-  /* margin-right: 2%; */
-  padding: 4%;
-  background-color: #fff;
-  border-radius: 20px;
-  box-sizing:content-box;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 1%
 }
 
 .notificationCardItems {
@@ -366,6 +354,5 @@ margin: 10px;
 }
 
 .notificationDiv {
-  margin-top: 5%;
   width: 100%;
 }

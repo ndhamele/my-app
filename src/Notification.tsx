@@ -1,3 +1,4 @@
+import { FitScreen } from "@mui/icons-material";
 import { AuthContext } from "./AuthContext";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,10 +11,10 @@ interface Notification {
   // Add other fields as per your schema
 }
 
-function toLocalDateTimeString(date : any) {
+function toLocalDateTimeString(date: any) {
   if (!date) return "";
 
-  const pad = (num :any) => num.toString().padStart(2, "0");
+  const pad = (num: any) => num.toString().padStart(2, "0");
 
   const year = date.getFullYear();
   const month = pad(date.getMonth() + 1); // getMonth() returns 0-11
@@ -43,8 +44,7 @@ const ModifyNotification: React.FC = () => {
     useState<Notification | null>(null);
   const requestData = {
     assignment: assignmentId,
-    dateTime: new Date(), // Assuming you want to set the current date and time for the notification
-    // Add other notification properties as required by your schema
+    dateTime: new Date(),
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -78,18 +78,11 @@ const ModifyNotification: React.FC = () => {
         return response.json();
       })
       .then((data) => {
-        // Update the local state to reflect the change
-        // You'll need to determine how you want to handle the state update based on your application's needs.
-        // For example, you might toggle a flag in the assignment object indicating whether a notification is active.
         console.log("data", data);
         setNotifications(data.notifications);
       })
       .catch((error) => console.error("Error modifying notification:", error));
-  }, []); // Empty array ensures this runs only on mount and not on updates
-
-  //   if toogle is enable make notification enable and post to database
-
-  // Function to open modal with the notification data
+  }, []);
   const handleEditClick = (notification: Notification) => {
     setEditableNotification({ ...notification });
     setEditingNotificationId(notification._id);
@@ -108,7 +101,6 @@ const ModifyNotification: React.FC = () => {
   ) => {
     setEditableNotification((prev) => {
       if (prev) {
-        // Check if prev is not null
         return {
           ...prev,
           [event.target.name]:
@@ -117,7 +109,7 @@ const ModifyNotification: React.FC = () => {
               : event.target.value,
         };
       }
-      return prev; // Return prev as is if it's null
+      return prev;
     });
   };
 
@@ -173,7 +165,14 @@ const ModifyNotification: React.FC = () => {
           body: JSON.stringify(editableNotification),
         }
       )
-        .then((response) => response.json())
+        .then((response) => {
+          response.json();
+          if (response.ok) {
+            window.alert("Notification updated successfully");
+          } else {
+            window.alert("Error updating notification");
+          }
+        })
         .then((data) => {
           setNotifications((prev) =>
             prev.map((notif) =>
@@ -183,7 +182,7 @@ const ModifyNotification: React.FC = () => {
             )
           );
           setEditingNotificationId(null);
-          closeModal();
+          // window.location.reload();
         })
         .catch((error) => console.error("Error updating notification:", error));
     }
@@ -212,148 +211,136 @@ const ModifyNotification: React.FC = () => {
   };
 
   return (
-    <div className="notificationDiv">
-        <div
-          style={{
-              transition: "all 0.5s ease",
-            }}
-            >
-          <input
-            type="checkbox"
-            name="enabled"
-            checked={newNotification.enabled}
-            onChange={handleToggle}
-          />
-          <input
-            type="datetime-local"
-            name="dateTime"
-            value={newNotification.dateTime}
-            onChange={handleDateChange}
-            />
-          <button onClick={handleSubmit} style={{ cursor: "pointer" }}>
-            Submit New Notification
-          </button>
+    <div className="row notificationDiv" style={{ marginTop:70}}>
+      {/* <div className="col-sm-6 mb-3 mb-sm-0">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Special title treatment</h5>
+            <p className="card-text">
+              With supporting text below as a natural lead-in to additional
+              content.
+            </p>
+            <a href="#" className="btn btn-primary">
+              Go somewhere
+            </a>
+          </div>
         </div>
-        
-          {notifications.map((notification, index) => (
-            <div
-              key={notification._id}
-              className="notificationCard"
-              style={{
-                border: "1px solid #ccc",
-                padding: "10px",
-                margin: "10px 0",
-                borderRadius: "5px",
-              }}
-            >
-              <p className="notificationCardItems">Notification {index + 1}</p>
-              <p className="notificationCardItems">
-                Date: {new Date(notification.dateTime).toLocaleString()}
-              </p>
+      </div>
+      <div className="col-sm-6">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Special title treatment</h5>
+            <p className="card-text">
+              With supporting text below as a natural lead-in to additional
+              content.
+            </p>
+            <a href="#" className="btn btn-primary">
+              Go somewhere
+            </a>
+          </div>
+        </div>
+      </div> */}
+      {notifications.map((notification, index) => (
+        <div className="col-6 notificationCard">
+          <div className="card">
+            <div className="card-body">
+              <div
+                className={`rounded-pill mb-2 ${
+                  notification.enabled ? "text-bg-success" : "text-bg-danger"
+                }`}
+              >
+                <h5 className="p-2 card-title">Notification {index + 1}</h5>
+                <p className="p-2 card-text">
+                  Date: {new Date(notification.dateTime).toLocaleString()}
+                </p>
+              </div>
               <button
-                type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                type="button"
+                className="btn btn-primary me-3"
+                data-bs-toggle="modal"
+                data-bs-target="#editModal"
                 onClick={() => handleEditClick(notification)}
-                // className="notificationCardItems"
-                // style={{
-                //   cursor: "pointer",
-                // //   padding: "5px 10px",
-                //   backgroundColor: "#007BFF",
-                //   color: "#fff",
-                //   border: "none",
-                //   borderRadius: "5px",
-                // }}
               >
                 Edit
               </button>
               <button
+                type="button"
                 onClick={() => handleDeleteNotification(notification)}
-                style={{
-                  cursor: "pointer",
-                //   padding: "5px 10px",
-                  backgroundColor: "#FF0000",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                }}
-                className="notificationCardItems"
+                className="btn btn-danger"
               >
                 Delete
               </button>
             </div>
-          ))}
-
-      {/* Modal for editing a notification */}
-      {isModalOpen && editableNotification && (
+          </div>
+        </div>
+      ))}
+      {
         <div
-          className="modal"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
+          className="modal fade"
+          id="editModal"
+          tabIndex={-1}
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
         >
-          {/* Modal content */}
-          <div
-            className="modal-content"
-            style={{
-              backgroundColor: "#fff",
-              padding: "20px",
-              borderRadius: "10px",
-              width: "80%",
-              maxWidth: "500px",
-            }}
-          >
-            <span
-              className="close"
-              onClick={closeModal}
-              style={{ float: "right", cursor: "pointer" }}
-            >
-              &times;
-            </span>
-            <h2>Edit Notification</h2>
-            <div>
-              <input
-                type="checkbox"
-                name="enabled"
-                checked={editableNotification?.enabled || false}
-                onChange={handleNotificationChange}
-              />
-              <input
-                type="datetime-local"
-                name="dateTime"
-                value={
-                  editableNotification
-                    ? toLocalDateTimeString(
-                        new Date(editableNotification.dateTime)
-                      )
-                    : ""
-                }
-                onChange={handleNotificationChange}
-              />
-              <button
-                onClick={handleUpdateNotification}
-                style={{
-                  marginTop: "10px",
-                  padding: "10px 20px",
-                  backgroundColor: "#007BFF",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                Update
-              </button>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="exampleModalLabel">
+                  Edit Notification
+                </h1>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    name="enabled"
+                    type="checkbox"
+                    checked={editableNotification?.enabled || false}
+                    id="flexCheckDefault"
+                    onChange={handleNotificationChange}
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="flexCheckDefault"
+                  >
+                    {editableNotification?.enabled ? "Enabled" : "Disabled"}
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="datetime-local"
+                    name="dateTime"
+                    value={
+                      editableNotification
+                        ? toLocalDateTimeString(
+                            new Date(editableNotification.dateTime)
+                          )
+                        : ""
+                    }
+                    onChange={handleNotificationChange}
+                  />
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleUpdateNotification}
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      )}
+      }
+      ;
     </div>
   );
 };

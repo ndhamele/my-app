@@ -16,6 +16,7 @@ import CourseModule from './course_Module';
 import AssignmentList from './AssignmentList';
 import AssignmentDetail from './AssignmentDetails';
 import ModifyNotification from './Notification';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function App() {
   const authContext = useContext(AuthContext);
