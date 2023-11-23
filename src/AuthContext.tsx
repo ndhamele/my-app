@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: (token: string) => void;
+  isInstructor: boolean; // Added for role-based routing [2/2]
+  login: (token: string, role: string) => void;
   logout: () => void;
 }
 
@@ -15,6 +16,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isInstructor, setIsInstructor] = useState(false); // Added for role-based routing [1/2
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,9 +25,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     console.log("AuthContext: useEffect - isLoggedIn", !!token); // Debugging
   }, []); // Empty dependency array means this runs once on mount
 
-  const login = (token: string) => {
+  const login = (token: string, role: string) => {
     localStorage.setItem('token', token);
+    localStorage.setItem('role',  role);
+    if (role === 'Instructor') {
+      setIsInstructor(true);
+    }
     setIsLoggedIn(true);
+
     console.log("AuthContext: login - isLoggedIn set to true"); // Debugging
   };
 
@@ -37,7 +44,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, isInstructor }}>
       {children}
     </AuthContext.Provider>
   );

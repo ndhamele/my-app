@@ -3,6 +3,7 @@ import MediaCard from './MediaCard';
 import DallEImage from './DALL_E.png';
 import './styles.css';
 import ErrorBoundary from './ErrorBoundary';
+import { AuthContext } from './AuthContext';
 
 // Define the types for your course and assignments
 export interface Assignment {
@@ -57,9 +58,19 @@ const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const { assignments } = dashboardProps;
   const [notifications, setNotifications] = useState<boolean[]>(new Array(assignments.length).fill(false));
+  const authContext = React.useContext(AuthContext);
 
   useEffect(() => {
     const token = localStorage.getItem('token'); // Retrieve your token from localStorage
+    if (!token) {
+      console.error('No token found in storage');
+      return;
+    }
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${token}` },
+    };
+
     const headers = new Headers({
       'Authorization': `Bearer ${token}`,
     });
@@ -77,6 +88,7 @@ const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
             // e.g., if the API returns { courses: [...courses] }
             if (data.courses && Array.isArray(data.courses)) {
               setCourses(data.courses);
+             console.log("data.courses", data.courses);
             } else {
               // Handle the error appropriately
               console.error('Data received is not an array:', data);

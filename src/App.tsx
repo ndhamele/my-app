@@ -13,6 +13,9 @@ import './styles.css';
 import { AuthContext } from './AuthContext';
 import Sidebar from './dashboard_Sidebar';
 import CourseModule from './course_Module';
+import AssignmentList from './AssignmentList';
+import AssignmentDetail from './AssignmentDetails';
+import ModifyNotification from './Notification';
 
 function App() {
   const authContext = useContext(AuthContext);
@@ -22,6 +25,9 @@ function App() {
   };
   const navigate = useNavigate();
 
+  // get is Instructor and course Code
+  const isInstructor = localStorage.getItem('role') === 'Instructor';
+  
   // useEffect(() => {
   //   if (authContext && !authContext.isLoggedIn) {
   //     // If not logged in, redirect to login page
@@ -73,9 +79,13 @@ function App() {
           <Route path="/" element={<Registration onRegister={() => {}}/>} />
           <Route path="/login" element={<Login />} /> {/* Pass handleLogin to Login component */}
           <Route path="/dashboard" element={<CanvasLMS {...canvasLMSProps}/>} />
-          <Route path="/assignments" element={<CanvasLMS {...canvasLMSProps}/>} />
-          <Route path="/course" element={<CourseModule />} />
-          <Route path="/course/Assignments" element={<CanvasLMS {...canvasLMSProps}/>} />
+          {/* <Route path="/course" element={<CourseModule />} /> */}
+          <Route path="/assignments/:courseCode" element={<AssignmentList isInstructor={isInstructor} />} />
+          <Route path="/assignments/:course/:id" element={<AssignmentDetail />} />
+          <Route path="/notifications/:assignmentId" element={<ModifyNotification/>} />
+          {isInstructor && (
+            <Route path="/assignments/:courseCode/new" element={<AssignmentList isInstructor={isInstructor} />} />
+          )}
         </Routes>
       </div>
       </div>

@@ -33,14 +33,17 @@ const MediaCard: React.FC<MediaCardProps> = ({ title, image, description, course
 
   const navigate = useNavigate();
 
-  const handleSelect = () => {
+  const handleSelect = (courseCode: string) => {
     console.log('handleSelect');
-    navigate('/course');
-    // navigate('login/dashboard/assignments');
+    navigate(`/assignments/${courseCode}`);
+  };
+  const handleCardClick = () => {
+    // Pass the courseCode here
+    handleSelect(courseCode);
   };
   
   return (
-    <Card className="card__styles" raised={true} onClick={handleSelect}
+    <Card className="card__styles" raised={true} onClick={handleCardClick}
     sx={{ maxWidth: 345, display: 'inline-block', marginRight: '10px', borderRadius:'10px', boxShadow: '0 0 20px rgba(0, 0, 0, 0.5)' }}>
       <Slider {...settings} className="image-slider">
         {image.map((imageUrl, index) => (

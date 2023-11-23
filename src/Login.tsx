@@ -23,12 +23,12 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        authContext?.login(data.token);
+        authContext?.login(data.token, data.role);
         navigate('/dashboard');
-      } else if (email === 'test@gmail.com' && password === 'test') {
-        authContext?.login('test');
-        navigate('/dashboard');
-      } 
+      } //else if (email === 'test@gmail.com' && password === 'test') {
+      //   authContext?.login('test');
+      //   navigate('/dashboard');
+      // } 
       else {
         setError('Login failed: ' + response.statusText);
       }
