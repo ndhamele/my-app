@@ -1,10 +1,14 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './styles.css';
 
 type SidebarItemProps = {
   label: string;
   onClick: () => void;
+};
+
+type courseModuleProps = {
+  courseCode: string;
 };
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ label, onClick }) => (
@@ -13,9 +17,11 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ label, onClick }) => (
   </div>
 );
 
-const CourseModule = () => {
+const CourseModule =() => {
   // You can fetch the course content data here if needed
   const navigate = useNavigate();
+  const { courseCode } = useParams<courseModuleProps>();
+
 
   const handleNavigation = (path: string) => {
     navigate(path);
@@ -23,7 +29,7 @@ const CourseModule = () => {
 
   return (
     <div className="course-sidebar" >
-    <SidebarItem label="Assignment" onClick={() => handleNavigation('/course/Assignments')} />
+    <SidebarItem label="Assignment" onClick={() => handleNavigation(`/assignments/${courseCode}`)} />
     <SidebarItem label="Discussion" onClick={() => handleNavigation('/course/Discussion')} />
     <SidebarItem label="Quiz" onClick={() => handleNavigation('/course/Quiz')} />
     <SidebarItem label="Files" onClick={() => handleNavigation('/course/Files')} />

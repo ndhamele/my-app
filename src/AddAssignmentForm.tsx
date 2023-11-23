@@ -16,7 +16,7 @@ const AddAssignmentForm: React.FC<AddAssignmentFormProps> = ({ setAssignments })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    fetch('/api/assignments', { // Use the correct API endpoint provided by your backend team
+    fetch('http://172.20.6.239:3000/api/assignments/${courseCode}', { // Use the correct API endpoint provided by your backend team
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

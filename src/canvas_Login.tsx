@@ -4,7 +4,7 @@ import DallEImage from './DALL_E.png';
 import './styles.css';
 import ErrorBoundary from './ErrorBoundary';
 import { AuthContext } from './AuthContext';
-import CourseModule from './course_Module';
+
 
 // Define the types for your course and assignments
 export interface Assignment {

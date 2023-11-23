@@ -9,7 +9,6 @@ import "./styles.css";
 import modifyNotification from "./Notification";
 import CourseModule from "./course_Module";
 
-
 export interface Assignment {
   id: string;
   name: string;
@@ -54,6 +53,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
             setAssignments(data.assignments);
             console.log("data", data);
             console.log("data.assignments", data.assignments);
+            console.log("role", localStorage.getItem("role"));
           } else {
             // Handle the error appropriately
             console.error("Data received is not an array:", data);
@@ -70,59 +70,69 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
   if (!assignments) {
     return <div>Loading...</div>;
   }
-  
+
   const modifyNotification = (assignmentId: string) => {
     console.log("assignmentId notificationnnnn", assignmentId);
-    navigate(`/notifications/${assignmentId}`);
+    navigate(`/assignments/${courseCode}/${assignmentId}/notifications`);
   };
 
+    const handleEdit = (assignmentId : string) => {
+        navigate(`/assignments/${courseCode}/${assignmentId}/edit`);
+    };
 
   return (
-    <div className="container-fluid d-flex justify-content-start" style={{marginTop:70}}>
-        <div className="d-inline col-3"><CourseModule /></div>
-    <div className="d-inline col-9 container" >
-      {isInstructor && <AddAssignmentForm setAssignments={setAssignments} />}
-      {/* <h2 style={{ marginTop: "-20%" }}>Assignments</h2> */}
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Due Date</th>
-            <th scope="col">Points</th>
-            <th scope="col"></th>{" "}
-            {/* This is for the button */}
-          </tr>
-        </thead>
-        <tbody>
-          {assignments.map((assignment) => (
-            <tr className="" key={assignment._id}>
-              <td className="name-column">
-                <Link
-                  to={`/assignments/${assignment.course}/${assignment._id}`}
-                  className="assignment-title"
-                >
-                  {assignment.name}
-                </Link>
-              </td>
-              <td className="description-column">{assignment.description}</td>
-              <td className="due-date-column">
-                {new Date(assignment.dueDate).toLocaleDateString()}
-              </td>
-              <td className="points-column">{assignment.points}</td>
-              <td className="button-column">
-                <button
-                  className="modify-notification-button"
-                  onClick={() =>
-                    modifyNotification(assignment._id)}>
-                  Modify Notification
-                </button>
-              </td>
+    <div
+      className="container-fluid d-flex justify-content-start"
+      style={{ marginTop: 70 }}
+    >
+      <div className="d-inline col-3">
+        <CourseModule />
+      </div>
+      <div className="d-inline col-9 container">
+        {isInstructor && <AddAssignmentForm setAssignments={setAssignments} />}
+        {/* <h2 style={{ marginTop: "-20%" }}>Assignments</h2> */}
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Due Date</th>
+              <th scope="col">Points</th>
+              <th scope="col"></th> {/* This is for the button */}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {assignments.map((assignment) => (
+              <tr className="" key={assignment._id}>
+                <td className="name-column">
+                  <Link
+                    to={`/assignments/${assignment.course}/${assignment._id}`}
+                    className="assignment-title"
+                  >
+                    {assignment.name}
+                  </Link>
+                </td>
+                <td className="description-column">{assignment.description}</td>
+                <td className="due-date-column">
+                  {new Date(assignment.dueDate).toLocaleDateString()}
+                </td>
+                <td className="points-column">{assignment.points}</td>
+                <td className="button-column">
+                  {isInst && (
+                    <button className="btn btn-primary" style={{marginRight:'2%'}}  onClick={() => handleEdit(assignment._id)}>Edit</button>
+                  )}
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => modifyNotification(assignment._id)}
+                  >
+                    Modify Notification
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

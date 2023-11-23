@@ -17,6 +17,7 @@ import AssignmentList from './AssignmentList';
 import AssignmentDetail from './AssignmentDetails';
 import ModifyNotification from './Notification';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import EditAssignment from './Edit_Assignment';
 
 function App() {
   const authContext = useContext(AuthContext);
@@ -80,10 +81,11 @@ function App() {
           <Route path="/" element={<Registration onRegister={() => {}}/>} />
           <Route path="/login" element={<Login />} /> {/* Pass handleLogin to Login component */}
           <Route path="/dashboard" element={<CanvasLMS {...canvasLMSProps}/>} />
-          <Route path="/course" element={<CourseModule />} />
+          {/* <Route path="/course" element={<CourseModule />} /> */}
           <Route path="/assignments/:courseCode" element={<AssignmentList isInstructor={isInstructor} />} />
           <Route path="/assignments/:course/:id" element={<AssignmentDetail />} />
-          <Route path="/notifications/:assignmentId" element={<ModifyNotification/>} />
+          <Route path="/assignments/:course/:assignmentId/notifications" element={<ModifyNotification/>} />
+          <Route path="/assignments/:courseCode/:assignmentId/edit" element={<EditAssignment />} />
           {isInstructor && (
             <Route path="/assignments/:courseCode/new" element={<AssignmentList isInstructor={isInstructor} />} />
           )}
