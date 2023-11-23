@@ -4,11 +4,7 @@ import Login from './Login';
 import Registration from './Registration';
 import CanvasLMS from './canvas_Login';
 import { CanvasLMSProps, Assignment } from './canvas_Login'; // Assuming these are exported from 'canvas_Login'
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 import './styles.css';
 import { AuthContext } from './AuthContext';
 import Sidebar from './dashboard_Sidebar';
@@ -93,8 +89,12 @@ function App() {
             element={<AssignmentDetail />}
           />
           <Route
-            path="/notifications/:assignmentId"
+            path="assignments/:courseCode/:assignmentId/notifications/"
             element={<ModifyNotification />}
+          />
+          <Route
+            path="/assignments/:courseCode/:assignmentId/edit"
+            element={<EditAssignment />}
           />
           {isInstructor && (
             <Route

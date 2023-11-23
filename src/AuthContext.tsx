@@ -20,6 +20,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const role = localStorage.getItem('role');
+    if (role === 'Instructor') {
+      setIsInstructor(true);
+    }
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
     console.log("AuthContext: useEffect - isLoggedIn", !!token); // Debugging
@@ -29,6 +33,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('token', token);
     localStorage.setItem('role',  role);
     if (role === 'Instructor') {
+
       setIsInstructor(true);
     }
     setIsLoggedIn(true);
@@ -38,6 +43,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     setIsLoggedIn(false);
     navigate('/login');
     console.log("AuthContext: logout - isLoggedIn set to false"); // Debugging

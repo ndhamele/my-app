@@ -51,9 +51,8 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
           // e.g., if the API returns { courses: [...courses] }
           if (data.assignments && Array.isArray(data.assignments)) {
             setAssignments(data.assignments);
-            console.log("data", data);
-            console.log("data.assignments", data.assignments);
-            console.log("role", localStorage.getItem("role"));
+            console.log("instrustor", isInst);
+            console.log("authContext", authContext);
           } else {
             // Handle the error appropriately
             console.error("Data received is not an array:", data);
@@ -76,8 +75,8 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
     navigate(`/assignments/${courseCode}/${assignmentId}/notifications`);
   };
 
-    const handleEdit = (assignmentId : string) => {
-        navigate(`/assignments/${courseCode}/${assignmentId}/edit`);
+    const handleEdit = (assignment : Assignment) => {
+        navigate(`/assignments/${courseCode}/${assignment.id}/edit`, { state: { assignment } });
     };
 
   return (
@@ -119,7 +118,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
                 <td className="points-column">{assignment.points}</td>
                 <td className="button-column">
                   {isInst && (
-                    <button className="btn btn-primary" style={{marginRight:'2%'}}  onClick={() => handleEdit(assignment._id)}>Edit</button>
+                    <button className="btn btn-primary" style={{marginRight:'2%'}}  onClick={() => handleEdit(assignment)}>Edit</button>
                   )}
                   <button
                     className="btn btn-primary"
