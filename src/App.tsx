@@ -27,15 +27,8 @@ function App() {
   };
   const navigate = useNavigate();
 
-  // get is Instructor and course Code
-  const isInstructor = localStorage.getItem('role') === 'Instructor';
-  
-  // useEffect(() => {
-  //   if (authContext && !authContext.isLoggedIn) {
-  //     // If not logged in, redirect to login page
-  //     navigate('/login');
-  //   }
-  // }, [authContext, authContext?.isLoggedIn, navigate]);
+  const isInstructor = localStorage.getItem("role") === "Instructor";
+
   const newAssignment: Assignment = {
     id: 1,
     name: "New Assignment",
@@ -56,42 +49,62 @@ function App() {
   };
 
   return (
-      <div className="App">
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar>
-            <Toolbar>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Canvas LMS
-              </Typography>
-              {authContext?.isLoggedIn ? (
-                <Button color="inherit" onClick={authContext.logout}>Logout</Button>
-              ) : (
-                <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <Button color="inherit">Login</Button>
-                </Link>
-              )}
-            </Toolbar>
-          </AppBar>
-        </Box>
-        <div className={`content-container ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-        {authContext?.isLoggedIn && (
-          <Sidebar />
+    <div className="container-fluid">
+      <nav className="navbar bg-primary" data-bs-theme="dark">
+        <div className="container-fluid">
+            <a className="navbar-brand" onClick={() => navigate("/")}>
+            Canvas LMS
+          </a>
+          {authContext?.isLoggedIn ? (
+            <Button color="inherit" onClick={authContext.logout}>
+              Logout
+            </Button>
+          ) : (
+            <Link
+              to="/login"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Button color="inherit">Login</Button>
+            </Link>
           )}
+        </div>
+      </nav>
+      <div
+        className={`content-container ${
+          sidebarOpen ? "sidebar-open" : "sidebar-closed"
+        }`}
+      >
+        {authContext?.isLoggedIn && <Sidebar />}
         <Routes>
-          <Route path="/" element={<Registration onRegister={() => {}}/>} />
-          <Route path="/login" element={<Login />} /> {/* Pass handleLogin to Login component */}
-          <Route path="/dashboard" element={<CanvasLMS {...canvasLMSProps}/>} />
-          {/* <Route path="/course" element={<CourseModule />} /> */}
-          <Route path="/assignments/:courseCode" element={<AssignmentList isInstructor={isInstructor} />} />
-          <Route path="/assignments/:course/:id" element={<AssignmentDetail />} />
-          <Route path="/assignments/:course/:assignmentId/notifications" element={<ModifyNotification/>} />
-          <Route path="/assignments/:courseCode/:assignmentId/edit" element={<EditAssignment />} />
+          <Route path="/" element={<Registration onRegister={() => {}} />} />
+          <Route path="/login" element={<Login />} />{" "}
+          {/* Pass handleLogin to Login component */}
+          <Route
+            path="/dashboard"
+            element={<CanvasLMS {...canvasLMSProps} />}
+          />
+          <Route path="/course" element={<CourseModule />} />
+          <Route
+            path="/assignments/:courseCode"
+            element={<AssignmentList isInstructor={isInstructor} />}
+          />
+          <Route
+            path="/assignments/:course/:id"
+            element={<AssignmentDetail />}
+          />
+          <Route
+            path="/notifications/:assignmentId"
+            element={<ModifyNotification />}
+          />
           {isInstructor && (
-            <Route path="/assignments/:courseCode/new" element={<AssignmentList isInstructor={isInstructor} />} />
+            <Route
+              path="/assignments/:courseCode/new"
+              element={<AssignmentList isInstructor={isInstructor} />}
+            />
           )}
         </Routes>
       </div>
-      </div>
+    </div>
   );
 }
 

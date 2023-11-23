@@ -39,35 +39,22 @@ function Login() {
   };
 
   return (
-    <div className="Login">
-      <div className="login-container">
-        <form onSubmit={handleSubmit}>
-          <h1>Canvas Login</h1>
-          <label>
-            Email:
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="Registration-input"
-            />
-          </label>
-          <br />
-          <label>
-            Password:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="Registration-input"
-            />
-          </label>
-          <br />
-          <button type="submit" className="Registration-button">Login</button>
-          {error && <div>{error}</div>}
-        </form>
-      </div>
-    </div>
+    <form className="container w-auto card" style={{marginTop: 20}} onSubmit={handleSubmit}>
+  <div className="mb-3">
+    <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+    <input type="email" value={email}
+              onChange={(e) => setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+    <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
+  </div>
+  <div className="mb-3">
+    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+    <input type="password" value={password}
+              onChange={(e) => setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" />
+  </div>
+  <button type="submit" style={{marginBottom:20}}className="btn btn-primary">Login</button>
+  {error && <div>{error}</div>}
+</form>
+    
   );
 }
 

@@ -69,7 +69,46 @@ function Registration({ onRegister = () => {}}: RegistrationProps) {
 }, [redirectToLogin, navigate]);
 
   return (
-    <div className="Registration">
+    <div className="container card" style={{marginTop:20}}>
+    <form onSubmit={handleSubmit} className="conatiner w-auto" style={{marginTop:20}}>
+  <div className="mb-3">
+    <label htmlFor="firstName" className="form-label">First Name</label>
+    <input type="text"  value={firstName} onChange={(e) => setFirstName(e.target.value)} className="form-control" id="firstName"/>
+    <div className="form-text">Enter your first name</div>
+  </div>
+  <div className="mb-3">
+    <label htmlFor="lastName" className="form-label">Last Name</label>
+    <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} className="form-control" id="lastName"/>
+    <div className="form-text">Enter your last name</div>
+  </div>
+  <select value={role} onChange={(e) => setRole(e.target.value)} className="form-select" aria-label="Default select example">
+  <option value="Student">Student</option>
+  <option value="Professor">Professor</option>
+</select>
+  <div className="mb-3">
+    <label htmlFor="email" className="form-label">Email address</label>
+    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" id="email" aria-describedby="emailHelp"/>
+    <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
+  </div>
+  <div className="mb-3">
+    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="exampleInputPassword1"/>
+    <div id="passwordHelp" className="form-text">We'll never share your password with anyone else.</div>
+  </div>
+  <div className="mb-3">
+    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="form-control" id="exampleInputPassword1"/>
+    <div id="passwordHelp" className="form-text">We'll never share your password with anyone else.</div>
+  </div>
+  <button type="submit" className="btn btn-primary">Submit</button>
+  {error && <p className="Registration-error">{error}</p>}
+        <hr/>
+        <p>Already have a account?</p>
+        <button className="btn btn-primary" style={{marginBottom:20}} onClick={handleLoginRedirect} >
+            Login here
+        </button>
+</form>
+    {/* <div className="Registration">
       <form onSubmit={handleSubmit}>
         <label>
           First Name:
@@ -110,8 +149,8 @@ function Registration({ onRegister = () => {}}: RegistrationProps) {
         <button className="Registration-button" onClick={handleLoginRedirect} >
             Login here
         </button>
-        {/* <a href="/login" className="Registration-button">Login here</a> */}
       </form>
+    </div> */}
     </div>
   );
 }
