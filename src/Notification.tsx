@@ -148,10 +148,6 @@ const ModifyNotification: React.FC = () => {
   const handleUpdateNotification = (event: React.FormEvent) => {
     event.preventDefault();
     if (editableNotification && editingNotificationId) {
-      const updateData = {
-        ...editableNotification,
-        dateTime: new Date(editableNotification.dateTime),
-      };
       fetch(
         `http://172.20.6.239:3000/api/notifications/${editingNotificationId}`,
         {
@@ -209,8 +205,8 @@ const ModifyNotification: React.FC = () => {
   };
 
   return (
-    <div className="row notificationDiv" style={{ marginTop:70}}>
-      {}
+    <div className="row notificationDiv" style={{ marginTop: 70 }}>
+      
       {notifications.map((notification, index) => (
         <div className="col-sm-6 mb-3 mb-sm-0 notificationCard">
           <div className="card">
@@ -312,6 +308,60 @@ const ModifyNotification: React.FC = () => {
         </div>
       }
       ;
+      <button
+  type="button"
+  className="btn"
+  data-bs-toggle="modal"
+  data-bs-target="#addNotificationModal"
+>
+  Add Notification
+</button>
+      <div
+        className="modal fade"
+        id="addNotificationModal"
+        tabIndex={-1}
+        aria-labelledby="addNotificationModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="addNotificationModalLabel">
+                Add Notification
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <input
+                type="datetime-local"
+                name="dateTime"
+                value={toLocalDateTimeString(new Date())}
+                onChange={handleNotificationChange}
+              />
+              <input
+              type="checkbox"
+              name="enabled"
+              checked={enabled}
+              onChange={handleToggle}
+            />
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSubmit}
+              >
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

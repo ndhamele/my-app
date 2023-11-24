@@ -3,7 +3,7 @@ import MediaCard from './MediaCard';
 import DallEImage from './DALL_E.png';
 import './styles.css';
 import ErrorBoundary from './ErrorBoundary';
-import { AuthContext } from './AuthContext';
+// import { AuthContext } from './AuthContext';
 
 
 // Define the types for your course and assignments
@@ -57,9 +57,7 @@ type Course = {
 // CanvasLMS Component
 const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const { assignments } = dashboardProps;
-  const [notifications, setNotifications] = useState<boolean[]>(new Array(assignments.length).fill(false));
-  const authContext = React.useContext(AuthContext);
+  // const authContext = React.useContext(AuthContext);
 
   useEffect(() => {
     const token = localStorage.getItem('token'); // Retrieve your token from localStorage
@@ -67,11 +65,6 @@ const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
       console.error('No token found in storage');
       return;
     }
-    const requestOptions = {
-      method: 'GET',
-      headers: { 'Authorization': `Bearer ${token}` },
-    };
-
     const headers = new Headers({
       'Authorization': `Bearer ${token}`,
     });
@@ -104,17 +97,6 @@ const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
         console.error('Error fetching courses:', error);
       });
   }, []);
-
-  const handleNotificationToggle = (index: number) => {
-    const newNotifications = [...notifications];
-    newNotifications[index] = !newNotifications[index];
-    setNotifications(newNotifications);
-  };
-
-  // on click of course show assignments
-  const handleCourse = () => {
-    console.log('handleCourse');
-  };
 
   return (
     <ErrorBoundary>
