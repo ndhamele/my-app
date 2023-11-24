@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 
 const EditAssignment: React.FC = () => {
   const location = useLocation();
@@ -9,12 +9,24 @@ const EditAssignment: React.FC = () => {
   const [description, setDescription] = useState(assignment.description);
   const [dueDate, setDueDate] = useState(assignment.dueDate);
   const [points, setPoints] = useState(assignment.points);
-  const formattedDueDate = dueDate ? format(new Date(dueDate), 'yyyy-MM-dd') : '';
+  // const formattedDueDate = dueDate ? format(new Date(dueDate), 'yyyy-MM-dd') : '';
   const { courseCode } = useParams<{ courseCode: string }>();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-  // const { courseCode } = useParams();
+  function toLocalDateTimeString(date: any) {
+    if (!date) return "";
+  
+    const pad = (num: any) => num.toString().padStart(2, "0");
+  
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1); // getMonth() returns 0-11
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+  
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -102,9 +114,9 @@ const EditAssignment: React.FC = () => {
               Due Date:
             </label>
             <input
-              type="date"
+              type="dateTime-local"
               id="dueDate"
-              value={formattedDueDate}
+              value={toLocalDateTimeString(new Date(dueDate))}
               onChange={handleDueDateChange}
               className="form-control"
             />

@@ -1,7 +1,6 @@
 // import { FitScreen } from "@mui/icons-material";
-import { AuthContext } from "./AuthContext";
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 interface Notification {
   assignmentId: string;
@@ -26,7 +25,6 @@ function toLocalDateTimeString(date: any) {
 }
 
 const ModifyNotification: React.FC = () => {
-  const authContext = React.useContext(AuthContext);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const token = localStorage.getItem("token");
   const { assignmentId } = useParams<{ assignmentId: string }>();

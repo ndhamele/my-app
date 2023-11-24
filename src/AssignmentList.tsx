@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import AddAssignmentForm from "./AddAssignmentForm"; // Make sure the path is correct
-import CanvasLMS from "./canvas_Login";
 import { AuthContext } from "./AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
-import ErrorBoundary from "./ErrorBoundary";
 import { Link } from "react-router-dom";
 import "./styles.css";
-import modifyNotification from "./Notification";
-import CourseModule from "./course_Module";
+import CourseModule from "./Sidebar";
 
 export interface Assignment {
   id: string;
@@ -75,9 +72,11 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
     navigate(`/assignments/${courseCode}/${assignmentId}/notifications`);
   };
 
-    const handleEdit = (assignment : Assignment) => {
-        navigate(`/assignments/${courseCode}/${assignment.id}/edit`, { state: { assignment } });
-    };
+  const handleEdit = (assignment: Assignment) => {
+    navigate(`/assignments/${courseCode}/${assignment.id}/edit`, {
+      state: { assignment },
+    });
+  };
 
   return (
     <div
@@ -88,7 +87,15 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
         <CourseModule />
       </div>
       <div className="d-inline col-9 container">
-        {isInstructor && <AddAssignmentForm setAssignments={setAssignments} />}
+        {/* {isInstructor && <AddAssignmentForm Assignments={Assignments} />} */}
+        {isInst && (
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate(`/assignments/${courseCode}/add`)}
+          >
+            Add Assignment
+          </button>
+        )}
         {/* <h2 style={{ marginTop: "-20%" }}>Assignments</h2> */}
         <table className="table table-hover">
           <thead>
@@ -113,19 +120,27 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
                 </td>
                 <td className="description-column">{assignment.description}</td>
                 <td className="due-date-column">
-                  {new Date(assignment.dueDate).toLocaleDateString()}
+                  {<td>{new Date(assignment.dueDate).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>}
                 </td>
                 <td className="points-column">{assignment.points}</td>
                 <td className="button-column">
                   {isInst && (
-                    <button className="btn btn-primary" style={{marginRight:'2%'}}  onClick={() => handleEdit(assignment)}>Edit</button>
+                    <button
+                      className="btn btn-primary"
+                      style={{ marginRight: "2%" }}
+                      onClick={() => handleEdit(assignment)}
+                    >
+                      Edit
+                    </button>
                   )}
+                  {!isInst && (
                   <button
                     className="btn btn-primary"
                     onClick={() => modifyNotification(assignment._id)}
                   >
                     Modify Notification
                   </button>
+                  )}
                 </td>
               </tr>
             ))}

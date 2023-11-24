@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     setIsLoggedIn(false);
+    setIsInstructor(false);
     navigate('/login');
     console.log("AuthContext: logout - isLoggedIn set to false"); // Debugging
   };

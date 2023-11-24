@@ -1,23 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useParams } from 'react-router-dom';
 import Login from './Login';
 import Registration from './Registration';
-import CanvasLMS from './canvas_Login';
-import { CanvasLMSProps, Assignment } from './canvas_Login'; // Assuming these are exported from 'canvas_Login'
+import CanvasLMS from './Dashboard';
+import { CanvasLMSProps, Assignment } from './Dashboard'; // Assuming these are exported from 'canvas_Login'
 import Button from '@mui/material/Button';
 import './styles.css';
 import { AuthContext } from './AuthContext';
-import Sidebar from './dashboard_Sidebar';
-import CourseModule from './course_Module';
+import Sidebar from './courseMenu';
+import CourseModule from './Sidebar';
 import AssignmentList from './AssignmentList';
 import AssignmentDetail from './AssignmentDetails';
 import ModifyNotification from './Notification';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import EditAssignment from './Edit_Assignment';
+import AddAssignmentForm from './AddAssignmentForm';
 
 function App() {
   const authContext = useContext(AuthContext);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const courseCode =useParams<{ courseCode: string }>();
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -48,9 +50,16 @@ function App() {
     <div className="container-fluid">
       <nav className="navbar bg-primary" data-bs-theme="dark">
         <div className="container-fluid">
+          {!authContext?.isLoggedIn && (
             <a className="navbar-brand" onClick={() => navigate("/")}>
             Canvas LMS
           </a>
+          )}
+          {authContext?.isLoggedIn && (
+            <a className="navbar-brand" onClick={() => navigate("/dashboard")}>
+              Canvas LMS
+            </a>
+          )}
           {authContext?.isLoggedIn ? (
             <Button color="inherit" onClick={authContext.logout}>
               Logout
@@ -95,6 +104,10 @@ function App() {
           <Route
             path="/assignments/:courseCode/:assignmentId/edit"
             element={<EditAssignment />}
+          />
+          <Route
+            path="/assignments/:courseCode/add"
+            element={<AddAssignmentForm />}
           />
           {isInstructor && (
             <Route
