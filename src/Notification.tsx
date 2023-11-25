@@ -49,6 +49,7 @@ const ModifyNotification: React.FC = () => {
   const [enabled, setEnabled] = useState(false);
 
   const handleToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEnabled(event.target.checked);
     setNewNotification({
       ...newNotification,
       enabled: event.target.checked,
@@ -206,7 +207,6 @@ const ModifyNotification: React.FC = () => {
 
   return (
     <div className="row notificationDiv" style={{ marginTop: 70 }}>
-      
       {notifications.map((notification, index) => (
         <div className="col-sm-6 mb-3 mb-sm-0 notificationCard">
           <div className="card">
@@ -308,14 +308,24 @@ const ModifyNotification: React.FC = () => {
         </div>
       }
       ;
-      <button
-  type="button"
-  className="btn"
-  data-bs-toggle="modal"
-  data-bs-target="#addNotificationModal"
->
-  Add Notification
-</button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-center",
+          padding: "1rem",
+          width: "100%",
+        }}
+      >
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#addNotificationModal"
+          style={{ fontSize: "1rem" }}
+        >
+          Add Notification
+        </button>
+      </div>
       <div
         className="modal fade"
         id="addNotificationModal"
@@ -344,11 +354,11 @@ const ModifyNotification: React.FC = () => {
                 onChange={handleNotificationChange}
               />
               <input
-              type="checkbox"
-              name="enabled"
-              checked={enabled}
-              onChange={handleToggle}
-            />
+                type="checkbox"
+                name="enabled"
+                checked={enabled}
+                onChange={handleToggle}
+              />
             </div>
             <div className="modal-footer">
               <button
