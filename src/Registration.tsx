@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 import "./styles.css";
+import { PORT } from "./index";
 // import { ErrorCallback } from 'typescript';
 
 interface RegistrationProps {
@@ -16,7 +17,7 @@ function Registration({ onRegister = () => {} }: RegistrationProps) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  // const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,16 +26,13 @@ function Registration({ onRegister = () => {} }: RegistrationProps) {
       return;
     }
     try {
-      const response = await fetch(
-        "http://172.20.6.239:3000/api/users/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, firstName, lastName, role, password }),
-        }
-      );
+      const response = await fetch(`${PORT}/api/users/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, firstName, lastName, role, password }),
+      });
       // const data = await response.json();
       if (response.ok) {
         onRegister();
@@ -56,18 +54,18 @@ function Registration({ onRegister = () => {} }: RegistrationProps) {
   };
 
   const navigate = useNavigate();
-  useEffect(() => {
-    if (redirectToLogin) {
-      console.log("Redirecting to login");
-      try {
-        return navigate("/login");
-      } catch (error) {
-        let message = "Unknown Error";
-        if (error instanceof Error) message = error.message;
-        console.log("Error: " + error);
-      }
-    }
-  }, [redirectToLogin, navigate]);
+  // useEffect(() => {
+  //   if (redirectToLogin) {
+  //     console.log("Redirecting to login");
+  //     try {
+  //       return navigate("/login");
+  //     } catch (error) {
+  //       let message = "Unknown Error";
+  //       if (error instanceof Error) message = error.message;
+  //       console.log("Error: " + message);
+  //     }
+  //   }
+  // }, [redirectToLogin, navigate]);
 
   return (
     <div className="container card" style={{ marginTop: 20 }}>

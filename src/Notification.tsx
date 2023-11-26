@@ -1,12 +1,15 @@
 // import { FitScreen } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Assignment } from "./AssignmentList";
+import { PORT } from "./index";
 
-interface Notification {
+export interface Notification {
   assignmentId: string;
   dateTime: Date;
   _id: string;
   enabled: boolean;
+  assignment?: Assignment;
   // Add other fields as per your schema
 }
 
@@ -28,23 +31,18 @@ const ModifyNotification: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const token = localStorage.getItem("token");
   const { assignmentId } = useParams<{ assignmentId: string }>();
-  const [dateTime, setDateTime] = useState(
-    new Date().toISOString().slice(0, 16)
-  );
+  const [dateTime, setDateTime] = useState(toLocalDateTimeString(new Date()));
   const [newNotification, setNewNotification] = useState({
     enabled: false,
-    dateTime: new Date().toISOString().slice(0, 16),
+    dateTime: toLocalDateTimeString(new Date()),
   });
   const [editingNotificationId, setEditingNotificationId] = useState<
     string | null
   >(null);
   const [editableNotification, setEditableNotification] =
     useState<Notification | null>(null);
-  const requestData = {
-    assignment: assignmentId,
-    dateTime: new Date(),
-  };
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dueDate = useParams<{ dueDate: string }>();
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [enabled, setEnabled] = useState(false);
 
@@ -57,13 +55,23 @@ const ModifyNotification: React.FC = () => {
   };
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewNotification({
-      ...newNotification,
-      dateTime: event.target.value,
-    });
+    // check if date is valid
+    const newDate = new Date(event.target.value);
+    // Check if date is valid
+    if (isNaN(newDate.getTime())) {
+      window.alert("Please enter a valid date");
+      return;
+    } else {
+      setDateTime(event.target.value);
+      setNewNotification({
+        ...newNotification,
+        dateTime: event.target.value,
+      });
+    }
   };
+
   useEffect(() => {
-    fetch(`http://172.20.6.239:3000/api/notifications/${assignmentId}`, {
+    fetch(`${PORT}/notifications/${assignmentId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -85,14 +93,6 @@ const ModifyNotification: React.FC = () => {
   const handleEditClick = (notification: Notification) => {
     setEditableNotification({ ...notification });
     setEditingNotificationId(notification._id);
-    console.log("notification._id", notification._id);
-    console.log("notification", notification);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setEditingNotificationId(null);
   };
 
   const handleNotificationChange = (
@@ -100,6 +100,15 @@ const ModifyNotification: React.FC = () => {
   ) => {
     setEditableNotification((prev) => {
       if (prev) {
+        // If the input is a date, check if it's valid
+        if (event.target.name === "dateTime") {
+          const newDate = new Date(event.target.value);
+          if (isNaN(newDate.getTime()) || event.target.value > dueDate) {
+            window.alert("Please enter a valid date");
+            return prev; // Return the previous state without changes
+          }
+        }
+
         return {
           ...prev,
           [event.target.name]:
@@ -120,7 +129,7 @@ const ModifyNotification: React.FC = () => {
       enabled: newNotification.enabled,
     };
 
-    fetch(`http://172.20.6.239:3000/api/notifications/${assignmentId}`, {
+    fetch(`${PORT}/notifications/${assignmentId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -134,6 +143,7 @@ const ModifyNotification: React.FC = () => {
     })
       .then((response) => {
         if (!response.ok) {
+          window.alert("Enter a valid Date and Time!");
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
@@ -149,23 +159,20 @@ const ModifyNotification: React.FC = () => {
   const handleUpdateNotification = (event: React.FormEvent) => {
     event.preventDefault();
     if (editableNotification && editingNotificationId) {
-      fetch(
-        `http://172.20.6.239:3000/api/notifications/${editingNotificationId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(editableNotification),
-        }
-      )
+      fetch(`${PORT}/notifications/${editingNotificationId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(editableNotification),
+      })
         .then((response) => {
           response.json();
           if (response.ok) {
             window.alert("Notification updated successfully");
           } else {
-            window.alert("Error updating notification");
+            window.alert("Enter a valid Date and Time!");
           }
         })
         .then((data) => {
@@ -185,7 +192,7 @@ const ModifyNotification: React.FC = () => {
 
   const handleDeleteNotification = (notification: Notification) => {
     // event.preventDefault();
-    fetch(`http://172.20.6.239:3000/api/notifications/${notification._id}`, {
+    fetch(`${PORT}/notifications/${notification._id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -198,7 +205,6 @@ const ModifyNotification: React.FC = () => {
           prev.filter((notif) => notif._id !== editingNotificationId)
         );
         setEditingNotificationId(null);
-        closeModal();
         window.alert(data.message);
         window.location.reload();
       })
@@ -218,7 +224,15 @@ const ModifyNotification: React.FC = () => {
               >
                 <h5 className="p-2 card-title">Notification {index + 1}</h5>
                 <p className="p-2 card-text">
-                  Date: {new Date(notification.dateTime).toLocaleString()}
+                  Date:{" "}
+                  {new Date(notification.dateTime).toLocaleString("en-US", {
+                    timeZone: "America/New_York",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </p>
               </div>
               <button
@@ -314,6 +328,7 @@ const ModifyNotification: React.FC = () => {
           justifyContent: "flex-center",
           padding: "1rem",
           width: "100%",
+          height: "90px",
         }}
       >
         <button
@@ -350,8 +365,8 @@ const ModifyNotification: React.FC = () => {
               <input
                 type="datetime-local"
                 name="dateTime"
-                value={toLocalDateTimeString(new Date())}
-                onChange={handleNotificationChange}
+                value={dateTime}
+                onChange={handleDateChange}
               />
               <input
                 type="checkbox"

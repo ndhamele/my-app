@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { PORT } from "./index";
 
 interface Assignment {
   name: string;
@@ -28,7 +29,7 @@ const AddAssignmentForm: React.FC = () => {
     e.preventDefault();
     console.log("assignmentData", assignmentData);
     console.log("courseCode", courseCode);
-    fetch(`http://172.20.6.239:3000/api/assignments/${courseCode}`, {
+    fetch(`${PORT}/assignments/${courseCode}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

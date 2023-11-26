@@ -3,15 +3,9 @@ import MediaCard from './MediaCard';
 import DallEImage from './DALL_E.png';
 import './styles.css';
 import ErrorBoundary from './ErrorBoundary';
-// import { AuthContext } from './AuthContext';
+import { Assignment } from './AssignmentList';
+import { PORT } from './index';
 
-
-// Define the types for your course and assignments
-export interface Assignment {
-  id: number;
-  name: string;
-  dueDate: Date;
-}
 
 interface DashboardProps {
   assignments: Assignment[];
@@ -34,28 +28,8 @@ type Course = {
   instructor: string;
 };
 
-// // Error Boundary Component
-// class ErrorBoundary extends React.Component {
-//   state = { hasError: false };
-
-//   static getDerivedStateFromError(error: Error) {
-//     return { hasError: true };
-//   }
-
-//   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-//     console.error('Uncaught error:', error, errorInfo);
-//   }
-
-//   render() {
-//     if (this.state.hasError) {
-//       return <h1>Something went wrong. Please try again later.</h1>;
-//     }
-//     return this.props.children;
-//   }
-// }
-
 // CanvasLMS Component
-const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
+const CanvasLMS: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   // const authContext = React.useContext(AuthContext);
 
@@ -69,7 +43,7 @@ const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
       'Authorization': `Bearer ${token}`,
     });
 
-    fetch('http://172.20.6.239:3000/api/courses', { headers })
+    fetch(`${PORT}/courses`, { headers })
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -100,8 +74,8 @@ const CanvasLMS: React.FC<CanvasLMSProps> = ({ dashboardProps }) => {
 
   return (
     <ErrorBoundary>
-    <div className='CanvasLMS'>
-      <div className='CanvasLMS-content'>
+    <div className='container-fluid d-flex flex-row p-2'>
+      <div>
         {/* use MediaCard to display courses */}
         {courses.map(course => (
           <MediaCard

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { PORT } from "./index";
 
 interface Assignment {
   id: string;
@@ -75,7 +76,7 @@ function AssignmentDetail() {
   });
 
   useEffect(() => {
-    fetch(`http://172.20.6.239:3000/api/assignments/${course}/${id}`, {
+    fetch(`${PORT}/assignments/${course}/${id}`, {
       headers,
     })
       .then((response) => {
@@ -103,13 +104,7 @@ function AssignmentDetail() {
       <p style={descriptionStyle}>{assignment.description}</p>
       <p style={descriptionStyle}>
         Due Date:{" "}
-        {new Date(assignment.dueDate).toLocaleString("en-US", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
+        {new Date(assignment.dueDate).toLocaleString('en-US', { timeZone:'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
       </p>
       <p style={descriptionStyle}>Points: {assignment.points}</p>
       <div style={buttonContainerStyle}>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import AddAssignmentForm from "./AddAssignmentForm"; // Make sure the path is correct
+// import AddAssignmentForm from "./AddAssignmentForm"; // Make sure the path is correct
 import { AuthContext } from "./AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./styles.css";
 import CourseModule from "./Sidebar";
+import { PORT } from "./index";
 
 export interface Assignment {
   id: string;
@@ -35,7 +36,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
   });
 
   useEffect(() => {
-    fetch(`http://172.20.6.239:3000/api/assignments/${courseCode}`, { headers }) // Use the correct API endpoint provided by your backend team
+    fetch(`${PORT}/assignments/${courseCode}`, { headers }) // Use the correct API endpoint provided by your backend team
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -67,13 +68,15 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
     return <div>Loading...</div>;
   }
 
-  const modifyNotification = (assignmentId: string) => {
-    console.log("assignmentId notificationnnnn", assignmentId);
-    navigate(`/assignments/${courseCode}/${assignmentId}/notifications`);
+  const modifyNotification = (assignment: Assignment) => {
+    console.log("assignmentId notificationnnnn", assignment._id);
+    navigate(`/assignments/${courseCode}/${assignment._id}/notifications`, {
+      state: { assignment },
+    });
   };
 
   const handleEdit = (assignment: Assignment) => {
-    navigate(`/assignments/${courseCode}/${assignment.id}/edit`, {
+    navigate(`/assignments/${courseCode}/${assignment._id}/edit`, {
       state: { assignment },
     });
   };
@@ -120,7 +123,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
                 </td>
                 <td className="description-column">{assignment.description}</td>
                 <td className="due-date-column">
-                  {<td>{new Date(assignment.dueDate).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>}
+                  {<td>{new Date(assignment.dueDate).toLocaleString('en-US', { timeZone:'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>}
                 </td>
                 <td className="points-column">{assignment.points}</td>
                 <td className="button-column">
@@ -136,7 +139,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
                   {!isInst && (
                   <button
                     className="btn btn-primary"
-                    onClick={() => modifyNotification(assignment._id)}
+                    onClick={() => modifyNotification(assignment)}
                   >
                     Modify Notification
                   </button>

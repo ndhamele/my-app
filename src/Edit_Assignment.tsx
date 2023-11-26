@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { PORT } from "./index";
 // import { format } from 'date-fns';
 
 const EditAssignment: React.FC = () => {
@@ -50,7 +51,7 @@ const EditAssignment: React.FC = () => {
     console.log("assignmentId", assignment._id);
     // Handle form submission and update assignment details
     // You can make an API call here to update the assignment details on the server
-    fetch(`http://172.20.6.239:3000/api/assignments/${assignment._id}`, {
+    fetch(`${PORT}/assignments/${assignment._id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

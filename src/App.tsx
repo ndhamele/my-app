@@ -1,50 +1,100 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useParams } from 'react-router-dom';
-import Login from './Login';
-import Registration from './Registration';
-import CanvasLMS from './Dashboard';
-import { CanvasLMSProps, Assignment } from './Dashboard'; // Assuming these are exported from 'canvas_Login'
-import Button from '@mui/material/Button';
-import './styles.css';
-import { AuthContext } from './AuthContext';
-import Sidebar from './courseMenu';
-import CourseModule from './Sidebar';
-import AssignmentList from './AssignmentList';
-import AssignmentDetail from './AssignmentDetails';
-import ModifyNotification from './Notification';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import EditAssignment from './Edit_Assignment';
-import AddAssignmentForm from './AddAssignmentForm';
+import React, { useState, useEffect, useContext } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+} from "react-router-dom";
+import Login from "./Login";
+import Registration from "./Registration";
+import CanvasLMS from "./Dashboard";
+// import { CanvasLMSProps } from './Dashboard'; // Assuming these are exported from 'canvas_Login'
+import Button from "@mui/material/Button";
+import "./styles.css";
+import { AuthContext } from "./AuthContext";
+import Sidebar from "./courseMenu";
+import CourseModule from "./Sidebar";
+import AssignmentList from "./AssignmentList";
+import AssignmentDetail from "./AssignmentDetails";
+import ModifyNotification from "./Notification";
+import { Notification } from "./Notification";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import EditAssignment from "./Edit_Assignment";
+import AddAssignmentForm from "./AddAssignmentForm";
+import { PORT } from "./index";
 
 function App() {
   const authContext = useContext(AuthContext);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const courseCode =useParams<{ courseCode: string }>();
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  // const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   const isInstructor = localStorage.getItem("role") === "Instructor";
 
-  const newAssignment: Assignment = {
-    id: 1,
-    name: "New Assignment",
-    dueDate: new Date(),
-  };
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const response = await fetch(`${PORT}/notifications`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setNotifications(data.notifications);
+      console.log("notifications", notifications);
+    };
 
-  const newAssignments: Assignment[] = [newAssignment];
+    // Fetch notifications immediately
+    fetchNotifications();
 
-  const dashboardProps = {
-    assignments: newAssignments,
-    courseName: "Sample Course",
-  };
+    // Fetch notifications every minute
+    const intervalId = setInterval(fetchNotifications, 600000);
 
-  const canvasLMSProps: CanvasLMSProps = {
-    dashboardProps: dashboardProps,
-    location: "Sample Location",
-    match: { path: "Sample Path" },
-  };
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const checkNotifications = () => {
+      const now = new Date();
+      const oneMinuteFromNow = new Date(now.getTime() + 60000);
+
+      // Check if notifications is an array
+      if (Array.isArray(notifications)) {
+        notifications.forEach((notification) => {
+          const notificationDate = new Date(notification.dateTime);
+          // Check if notification.assignment and dueDate are defined
+          if (notification.assignment && notification.assignment.dueDate) {
+            // Use assignment due date in the alert message
+            const dueDate = new Date(notification.assignment.dueDate);
+            if (
+              notificationDate >= now &&
+              notificationDate <= oneMinuteFromNow &&
+              notification.enabled
+            ) {
+              window.alert(
+                `Notification: ${
+                  notification.assignment.name
+                } is due at ${dueDate.toLocaleString()}`
+              );
+            }
+          }
+        });
+      }
+    };
+
+    // Check notifications immediately
+    checkNotifications();
+
+    // Check notifications every minute
+    const intervalId = setInterval(checkNotifications, 60000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [notifications]);
 
   return (
     <div className="container-fluid">
@@ -52,8 +102,8 @@ function App() {
         <div className="container-fluid">
           {!authContext?.isLoggedIn && (
             <a className="navbar-brand" onClick={() => navigate("/")}>
-            Canvas LMS
-          </a>
+              Canvas LMS
+            </a>
           )}
           {authContext?.isLoggedIn && (
             <a className="navbar-brand" onClick={() => navigate("/dashboard")}>
@@ -74,20 +124,13 @@ function App() {
           )}
         </div>
       </nav>
-      <div
-        className={`content-container ${
-          sidebarOpen ? "sidebar-open" : "sidebar-closed"
-        }`}
-      >
+      <div className={`content-container`}>
         {authContext?.isLoggedIn && <Sidebar />}
         <Routes>
           <Route path="/" element={<Registration onRegister={() => {}} />} />
           <Route path="/login" element={<Login />} />{" "}
           {/* Pass handleLogin to Login component */}
-          <Route
-            path="/dashboard"
-            element={<CanvasLMS {...canvasLMSProps} />}
-          />
+          <Route path="/dashboard" element={<CanvasLMS />} />
           <Route path="/course" element={<CourseModule />} />
           <Route
             path="/assignments/:courseCode"
