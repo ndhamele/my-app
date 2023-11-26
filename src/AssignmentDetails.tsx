@@ -80,15 +80,12 @@ function AssignmentDetail() {
       headers,
     })
       .then((response) => {
-        console.log("response", response);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        console.log("response", response.json);
         return response.json();
       })
       .then((data) => {
-        console.log("data", data);
         setAssignment(data.assignment);
       })
       .catch((error) => console.error("Error fetching assignment:", error));

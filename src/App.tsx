@@ -44,7 +44,6 @@ function App() {
       });
       const data = await response.json();
       setNotifications(data.notifications);
-      console.log("notifications", notifications);
     };
 
     // Fetch notifications immediately

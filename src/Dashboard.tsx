@@ -56,7 +56,6 @@ const CanvasLMS: React.FC = () => {
             // e.g., if the API returns { courses: [...courses] }
             if (data.courses && Array.isArray(data.courses)) {
               setCourses(data.courses);
-             console.log("data.courses", data.courses);
             } else {
               // Handle the error appropriately
               console.error('Data received is not an array:', data);

@@ -85,7 +85,6 @@ const ModifyNotification: React.FC = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("data", data);
         setNotifications(data.notifications);
       })
       .catch((error) => console.error("Error modifying notification:", error));
@@ -149,7 +148,6 @@ const ModifyNotification: React.FC = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("chekkkkkdata", data);
         window.alert(data.message);
         window.location.reload();
       })

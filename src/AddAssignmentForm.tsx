@@ -27,8 +27,6 @@ const AddAssignmentForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("assignmentData", assignmentData);
-    console.log("courseCode", courseCode);
     fetch(`${PORT}/assignments/${courseCode}`, {
       method: "POST",
       headers: {
@@ -39,7 +37,6 @@ const AddAssignmentForm: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("dataAdd", data);
         navigate(`/assignments/${courseCode}`);
       });
   };

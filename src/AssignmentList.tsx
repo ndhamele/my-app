@@ -49,8 +49,6 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
           // e.g., if the API returns { courses: [...courses] }
           if (data.assignments && Array.isArray(data.assignments)) {
             setAssignments(data.assignments);
-            console.log("instrustor", isInst);
-            console.log("authContext", authContext);
           } else {
             // Handle the error appropriately
             console.error("Data received is not an array:", data);
@@ -69,7 +67,6 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
   }
 
   const modifyNotification = (assignment: Assignment) => {
-    console.log("assignmentId notificationnnnn", assignment._id);
     navigate(`/assignments/${courseCode}/${assignment._id}/notifications`, {
       state: { assignment },
     });

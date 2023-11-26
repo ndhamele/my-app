@@ -48,7 +48,6 @@ const EditAssignment: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("assignmentId", assignment._id);
     // Handle form submission and update assignment details
     // You can make an API call here to update the assignment details on the server
     fetch(`${PORT}/assignments/${assignment._id}`, {
