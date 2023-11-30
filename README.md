@@ -44,3 +44,47 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# Canvas LMS
+
+Canvas LMS is a Learning Management System web application that allows instructors and students to manage courses and assignments.
+
+## Table of Contents
+
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+- User authentication and authorization for instructors and students.
+- Dashboard for course management.
+- Course creation and enrollment.
+- Assignment management.
+- Real-time notifications.
+- Responsive design for mobile and desktop.
+
+## Getting Started
+
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+To run this project, you'll need the following software installed on your machine:
+
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) (Node Package Manager)
+
+### Installation
+
+1. Clone the repository to your local machine:
+
+```bash
+git clone https://github.com/ndhamele/my-app.git
+
+To install all dependencies just do give cmd `npm install`.
+

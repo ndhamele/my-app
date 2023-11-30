@@ -58,7 +58,7 @@ const ModifyNotification: React.FC = () => {
     // check if date is valid
     const newDate = new Date(event.target.value);
     // Check if date is valid
-    if (isNaN(newDate.getTime())) {
+    if (isNaN(newDate.getTime()) || event.target.value > dueDate) {
       window.alert("Please enter a valid date");
       return;
     } else {
@@ -104,17 +104,19 @@ const ModifyNotification: React.FC = () => {
           const newDate = new Date(event.target.value);
           if (isNaN(newDate.getTime()) || event.target.value > dueDate) {
             window.alert("Please enter a valid date");
+            window.location.reload();
             return prev; // Return the previous state without changes
           }
         }
-
-        return {
-          ...prev,
-          [event.target.name]:
-            event.target.type === "checkbox"
-              ? event.target.checked
-              : event.target.value,
-        };
+        else{
+            return {
+              ...prev,
+              [event.target.name]:
+                event.target.type === "checkbox"
+                  ? event.target.checked
+                  : event.target.value,
+            };
+          }
       }
       return prev;
     });
@@ -171,6 +173,7 @@ const ModifyNotification: React.FC = () => {
             window.alert("Notification updated successfully");
           } else {
             window.alert("Enter a valid Date and Time!");
+            window.location.reload();
           }
         })
         .then((data) => {

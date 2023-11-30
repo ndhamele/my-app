@@ -81,12 +81,12 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ isInstructor }) => {
   return (
     <div
       className="container-fluid d-flex justify-content-start"
-      style={{ marginTop: 70 }}
+      style={{ marginTop: "2%" }}
     >
-      <div className="d-inline col-3">
+      <div className="d-inline">
         <CourseModule />
       </div>
-      <div className="d-inline col-9 container">
+      <div className="d-inline container-fluid ms-2">
         {/* {isInstructor && <AddAssignmentForm Assignments={Assignments} />} */}
         {isInst && (
           <button

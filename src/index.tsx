@@ -7,7 +7,7 @@ import { AuthProvider } from './AuthContext';
 import { BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const PORT = `http://172.20.6.239:3000/api`
+export const PORT = `http://localhost:3000/api`
 
 ReactDOM.render(
   <React.StrictMode>

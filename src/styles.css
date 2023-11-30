@@ -108,7 +108,6 @@ margin: 10px;
   
 }
 
-
 .CanvasLMS h1 {
   color: #333;
 }
@@ -146,31 +145,16 @@ margin: 10px;
 }
 
 .course-sidebar {
-  margin-top: 2%;
-  /* margin-left: -2%; */
-  /* margin-right: 2%; */
-  padding: 4%;
+  display: flex;
+  flex-direction: column;
+  padding: 5%;
   width: fit-content;
   background-color: #fff;
   border-radius: 20px;
   box-sizing:flex-box;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  /* margin-top: -18%; */
 }
-
-/* .assignment-list-item {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  width: 100%;
-  transition: background-color 0.3s ease;
-}
-
-
-
-.assignment-title {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #444;
-} */
 
 .assignment-list {
   display: flex;
@@ -204,20 +188,6 @@ margin: 10px;
   color: #444;
 }
 
-/* .modify-notification-button {
-  background-color: #008CBA;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  float: right;
-} */
-
-
 .modify-notification-button {
   background-color: #008CBA;
   border: none;
@@ -229,25 +199,6 @@ margin: 10px;
   font-size: 16px;
   cursor: pointer;
 }
-
-/* .modify-notification-button {
-  background-color: #008CBA;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  float: right;
-} */
-
-/* .Assignments{
-  text-align: center;
-  background-image: "https://img.freepik.com/free-vector/background-realistic-abstract-technology-particle_23-2148431735.jpg?w=1060&t=st=1697597741~exp=1697598341~hmac=e83148d4079181f86caefc5f6039c9ece4331cfc2906d7cd05d72013c0e14a3c";
-  padding: 30px;
-} */
 
 .modal {
   display: hidden; /* Hidden by default */

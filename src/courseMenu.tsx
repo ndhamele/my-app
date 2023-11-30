@@ -43,8 +43,8 @@ const styles = {
   sidebar: {
     backgroundColor: '#2c3e50',
     width: '12%',
-    height: '100vh',
-    padding: '8% 0',
+    height: '130vh',
+    padding: '3% 0',
     // Add any other sidebar styling here
   },
   dashboard: {
